@@ -338,6 +338,34 @@ thread_foreach (thread_action_func *func, void *aux)
       func (t, aux);
     }
 }
+/*
+check if the thread need to be unblock
+*/
+void thread_check_sleep(struct thread *t, void *aux)
+{
+  int64_t current_tick = (int64_t)aux;
+  if (t->sleep_start_ticks != -1 && t->sleep_ticks != -1)
+  {
+    if (current_tick - t->sleep_start_ticks >= t->sleep_ticks)
+    {
+      t->sleep_start_ticks = -1;
+      t->sleep_ticks = -1;
+      thread_unblock(t);
+    }
+  }
+};
+
+/*
+pass the start_ticks and the sleep_ticks to current thread.
+*/
+void thread_pass_tick(int64_t tick, int64_t start)
+{
+  struct thread *cur = thread_current();
+
+  cur->sleep_ticks = tick;
+
+  cur->sleep_start_ticks = start;
+}
 
 /* Sets the current thread's priority to NEW_PRIORITY. */
 void
@@ -469,6 +497,8 @@ init_thread (struct thread *t, const char *name, int priority)
   t->stack = (uint8_t *) t + PGSIZE;
   t->priority = priority;
   t->magic = THREAD_MAGIC;
+  t->sleep_start_ticks = -1;
+  t->sleep_ticks = -1;
   list_push_back (&all_list, &t->allelem);
 }
 
