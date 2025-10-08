@@ -90,8 +90,8 @@ struct thread
     int priority;                       /* Priority. */
     struct list_elem allelem;           /* List element for all threads list. */
 
-    int64_t sleep_ticks;
-    int64_t sleep_start_ticks;
+    int64_t sleep_ticks;                 /* Ticks that thread would sleep for*/
+    int64_t sleep_start_ticks;           /* Ticks that thread would start to sleep*/
 
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */

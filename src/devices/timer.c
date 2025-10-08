@@ -96,6 +96,9 @@ timer_sleep (int64_t ticks)
   
   if (timer_elapsed (start) < ticks) 
   {
+    /*
+    thread would now block here, so interrupts need to be turned off.
+    */
     thread_pass_tick(ticks, start);
     old_level = intr_disable();
     thread_block();
@@ -179,7 +182,7 @@ timer_interrupt (struct intr_frame *args UNUSED)
 {
   ticks++;
   thread_tick ();
-  thread_foreach(thread_check_sleep,ticks);
+  thread_foreach(thread_check_sleep,ticks); /* Every thread would be checked if it is still need to sleep*/
 }
 
 /* Returns true if LOOPS iterations waits for more than one timer

@@ -341,7 +341,8 @@ thread_foreach (thread_action_func *func, void *aux)
 /*
 check if the thread need to be unblock
 */
-void thread_check_sleep(struct thread *t, void *aux)
+void 
+thread_check_sleep(struct thread *t, void *aux)
 {
   int64_t current_tick = (int64_t)aux;
   if (t->sleep_start_ticks != -1 && t->sleep_ticks != -1)
@@ -358,7 +359,8 @@ void thread_check_sleep(struct thread *t, void *aux)
 /*
 pass the start_ticks and the sleep_ticks to current thread.
 */
-void thread_pass_tick(int64_t tick, int64_t start)
+void 
+thread_pass_tick(int64_t tick, int64_t start)
 {
   struct thread *cur = thread_current();
 
