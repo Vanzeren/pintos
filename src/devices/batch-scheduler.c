@@ -84,15 +84,12 @@ static void transfer_data (const task_t *task);
 /* Releases the slot */
 static void release_slot (const task_t *task);
 
-static int counter;
-
 void init_bus (void) {
 
   random_init ((unsigned int)123456789);
 
   /* TODO: Initialize global/static variables,
      e.g. your condition variables, locks, counters etc */
-  counter = 0;
   
   /* Initialize synchronization primitives */
   lock_init(&bus_lock);
